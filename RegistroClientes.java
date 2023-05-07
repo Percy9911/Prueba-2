@@ -4,6 +4,7 @@
  */
 package com.mycompany.sistemafactura;
 
+import javax.swing.JOptionPane;
 /**
  *
  * @author HP
@@ -30,7 +31,6 @@ public class RegistroClientes extends javax.swing.JFrame {
         jButtonRegistrar = new javax.swing.JButton();
         textNombre = new javax.swing.JTextField();
         textApellido = new javax.swing.JTextField();
-        textDNI = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         textCorreo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -44,9 +44,10 @@ public class RegistroClientes extends javax.swing.JFrame {
         tituloRegistrar = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        textTelefono = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        textDNI = new javax.swing.JFormattedTextField();
+        textTelefono = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -74,13 +75,6 @@ public class RegistroClientes extends javax.swing.JFrame {
         textApellido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textApellidoKeyTyped(evt);
-            }
-        });
-
-        textDNI.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textDNI.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textDNIKeyTyped(evt);
             }
         });
 
@@ -116,17 +110,24 @@ public class RegistroClientes extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(206, 200, 200));
         jLabel12.setText("ej. Perez Torres");
 
-        textTelefono.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        textTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textTelefonoKeyTyped(evt);
-            }
-        });
-
         jLabel13.setText("Telefono:");
 
         jLabel14.setForeground(new java.awt.Color(206, 200, 200));
         jLabel14.setText("ej.  919881209");
+
+        textDNI.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("########"))));
+        textDNI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textDNIActionPerformed(evt);
+            }
+        });
+
+        textTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#########"))));
+        textTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textTelefonoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,20 +137,18 @@ public class RegistroClientes extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(textTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(textDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel8))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jButtonRegistrar)
                                 .addGroup(layout.createSequentialGroup()
@@ -159,7 +158,11 @@ public class RegistroClientes extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel11)
-                                        .addComponent(jLabel12))))))
+                                        .addComponent(jLabel12))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(textDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel8))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel7)
@@ -174,9 +177,8 @@ public class RegistroClientes extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel14))
-                    .addComponent(textTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(jLabel14)))
+                .addContainerGap(21, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tituloRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,12 +205,12 @@ public class RegistroClientes extends javax.swing.JFrame {
                                 .addComponent(jLabel12)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(textDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4))
-                            .addComponent(jLabel8)))
+                                .addComponent(jLabel8)
+                                .addComponent(textDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel9))
@@ -226,50 +228,44 @@ public class RegistroClientes extends javax.swing.JFrame {
                     .addComponent(jLabel14))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(jButtonRegistrar)
-                        .addGap(19, 19, 19))))
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrarActionPerformed
-        // TODO add your handling code here
+        RegistroClientes RegistroClientes = new RegistroClientes();
+        String email = textCorreo.getText();
+        String EMAIL_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*@[A-Za-z0-9]+(?:\\.[A-Za-z0-9]+)*(?:\\.[A-Za-z]{2,})$";
+              
+        if("".equals(textNombre.getText()) ||
+                "".equals(textApellido.getText()) ||
+                "".equals(textDNI.getText()) ||
+                "".equals(textCorreo.getText()) ||
+                "".equals(TextDireccion.getText()) ||
+                "".equals(textTelefono.getText()) ){
+            JOptionPane.showMessageDialog(null, "Falta llenar datos", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        }else if (!email.matches(EMAIL_PATTERN)) {
+            JOptionPane.showMessageDialog(null, "Correo invalido", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            RegistroClientes.setVisible(true);
+            this.setVisible(false);
+            
+            //---------------CODIGO PARA ENVIAR LA INFORMACION A LA BASE DE DATOS-------------------------------------------------
+            
+        }
+
+
+// TODO add your handling code here
     }//GEN-LAST:event_jButtonRegistrarActionPerformed
-
-    private void textDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textDNIKeyTyped
-        int key = evt.getKeyChar();
-
-        boolean numeros = key >= 48 && key <= 57;
-
-        if (!numeros) {
-            evt.consume();
-        }
-
-        if (textDNI.getText().trim().length() == 9) {
-            evt.consume();
-        }
-// TODO add your handling code here:
-    }//GEN-LAST:event_textDNIKeyTyped
-
-    private void textTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTelefonoKeyTyped
-        int key = evt.getKeyChar();
-
-        boolean numeros = key >= 48 && key <= 57;
-
-        if (!numeros) {
-            evt.consume();
-        }
-
-        if (textTelefono.getText().trim().length() == 10) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_textTelefonoKeyTyped
 
     private void textNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textNombreKeyTyped
         int key = evt.getKeyChar();
@@ -291,6 +287,14 @@ public class RegistroClientes extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_textApellidoKeyTyped
+
+    private void textDNIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textDNIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textDNIActionPerformed
+
+    private void textTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textTelefonoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,9 +349,9 @@ public class RegistroClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField textApellido;
     private javax.swing.JTextField textCorreo;
-    private javax.swing.JTextField textDNI;
+    private javax.swing.JFormattedTextField textDNI;
     private javax.swing.JTextField textNombre;
-    private javax.swing.JTextField textTelefono;
+    private javax.swing.JFormattedTextField textTelefono;
     private javax.swing.JLabel tituloRegistrar;
     // End of variables declaration//GEN-END:variables
 }
