@@ -1,4 +1,3 @@
-
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +12,6 @@ public class AgregarProductoDialog extends JDialog {
     private JTextField descripcionTextField;
     private JTextField precioUnitarioTextField;
     private JTextField cantidadTextField;
-    private JTextField precioTextField; // Agregar este campo
     private JButton agregarButton;
     private JButton cancelarButton;
 
@@ -28,21 +26,17 @@ public class AgregarProductoDialog extends JDialog {
         precioUnitarioTextField = new JTextField();
         JLabel cantidadLabel = new JLabel("Cantidad:");
         cantidadTextField = new JTextField();
-        JLabel precioLabel = new JLabel("Precio:");
-        precioTextField = new JTextField(); // Agregar este campo
         agregarButton = new JButton("Agregar");
         cancelarButton = new JButton("Cancelar");
 
         // Configurar el layout
-        JPanel panel = new JPanel(new GridLayout(5, 2)); // Cambiar el GridLayout
+        JPanel panel = new JPanel(new GridLayout(4, 2));
         panel.add(descripcionLabel);
         panel.add(descripcionTextField);
         panel.add(precioUnitarioLabel);
         panel.add(precioUnitarioTextField);
         panel.add(cantidadLabel);
         panel.add(cantidadTextField);
-        panel.add(precioLabel);
-        panel.add(precioTextField); // Agregar este campo
         panel.add(agregarButton);
         panel.add(cancelarButton);
 
@@ -52,7 +46,6 @@ public class AgregarProductoDialog extends JDialog {
                 agregarProducto();
             }
         });
-        
 
         cancelarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -63,44 +56,46 @@ public class AgregarProductoDialog extends JDialog {
         // Configurar el diálogo
         add(panel);
         setTitle("Agregar Producto");
-        setSize(300, 180); // Ajustar el tamaño
+        setSize(300, 150);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
     public Producto getProducto() {
         String descripcion = descripcionTextField.getText();
-        String precioTexto = precioTextField.getText();
+        String precioUnitarioTexto = precioUnitarioTextField.getText();
         String cantidadTexto = cantidadTextField.getText();
-        
+
         // Validar que los campos no estén vacíos
-        if (descripcion.isEmpty() || precioTexto.isEmpty() || cantidadTexto.isEmpty()) {
+        if (descripcion.isEmpty() || precioUnitarioTexto.isEmpty() || cantidadTexto.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor complete todos los campos.");
             return null;
         }
-        
-        double precio = 0.0;
+
+        double precioUnitario = 0.0;
         int cantidad = 0;
-        
+
         try {
-            precio = Double.parseDouble(precioTexto);
+            precioUnitario = Double.parseDouble(precioUnitarioTexto);
             cantidad = Integer.parseInt(cantidadTexto);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Por favor ingrese valores numéricos para el precio y la cantidad.");
+            JOptionPane.showMessageDialog(null, "Por favor ingrese valores numéricos para el precio unitario y la cantidad.");
             return null;
         }
-        
-        Producto producto = new Producto(descripcion, precio, cantidad);
+
+        Producto producto = new Producto(descripcion, precioUnitario, cantidad);
         return producto;
     }
-    
+
     private void agregarProducto() {
-        String descripcion = descripcionTextField.getText();
-        double precioUnitario = Double.parseDouble(precioUnitarioTextField.getText());
-        int cantidad = Integer.parseInt(cantidadTextField.getText());
-        Producto producto = new Producto(descripcion, precioUnitario, cantidad);
-        factura.getItems().add(producto);
-        dispose();
+        
+        Producto producto = getProducto();
+        if (producto != null) {
+            factura.getItems().add(producto);
+            double precio = producto.getPrecioUnitario() * producto.getCantidad();
+            JOptionPane.showMessageDialog(null, "El precio total del producto es: $" + precio);
+            dispose();
+        }
     }
 }
-

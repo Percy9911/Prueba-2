@@ -1,19 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.io.FileWriter;
@@ -30,11 +18,38 @@ public class Factura {
         this.fechaFactura = fechaFactura;
     }
     public Factura() {
-
+        this.items = new ArrayList<Producto>();
     }
 
     public void ingresarDatosFactura() {
-        Scanner input = new Scanner(System.in);
+        // Solicitar los datos de la factura al usuario usando ventanas emergentes
+        String numeroFactura = JOptionPane.showInputDialog(null, "Ingrese el número de factura:");
+        String nombreCliente = JOptionPane.showInputDialog(null, "Ingrese el nombre del cliente:");
+        String fechaFactura = JOptionPane.showInputDialog(null, "Ingrese la fecha de la factura (DD/MM/AAAA):");
+
+        // Validar que se hayan ingresado todos los datos
+        if (numeroFactura.equals("") || nombreCliente.equals("") || fechaFactura.equals("")) {
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese todos los datos de la factura.");
+            return;
+        }
+
+        // Convertir la fecha a un objeto de tipo Date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date fecha;
+        try {
+            fecha = dateFormat.parse(fechaFactura);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "La fecha ingresada no tiene un formato válido. Por favor, ingrese la fecha en formato DD/MM/AAAA.");
+            return;
+        }
+
+        // Asignar los datos de la factura al objeto Factura
+        this.numeroFactura = numeroFactura;
+        this.nombreCliente = nombreCliente;
+
+        this.fechaFactura = fecha;
+        this.items = new ArrayList<Producto>();
+        /*Scanner input = new Scanner(System.in);
         System.out.print("Ingrese el número de factura: ");
         String numeroFactura = input.nextLine();
         this.numeroFactura = numeroFactura;
@@ -49,20 +64,23 @@ public class Factura {
             this.fechaFactura = fechaFactura;
         } catch (ParseException e) {
             System.out.println("Error al ingresar la fecha. Formato debe ser dd/mm/aaaa.");
-        }
+        }*/
     }
 
     
 
     public void agregarProducto() {
-        AgregarProductoDialog agregarProductoDialog = new AgregarProductoDialog(this);
-        agregarProductoDialog.setVisible(true);
-        if (agregarProductoDialog.getProducto() != null) {
-            Producto producto = agregarProductoDialog.getProducto();
-            this.items.add(producto);
-            JOptionPane.showMessageDialog(null, "Producto agregado con éxito");
+        if (this.numeroFactura == null || this.fechaFactura == null || this.nombreCliente == null || this.items == null) {
+            System.out.println("Por favor, ingrese primero los datos de la factura antes de agregar un producto.");
+            return;
         }
 
+        String nombreProducto = JOptionPane.showInputDialog("Ingrese el nombre del producto:");
+        double precioProducto = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el precio del producto:"));
+        int cantidadProducto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad del producto:"));
+
+        Producto producto = new Producto(nombreProducto, precioProducto, cantidadProducto);
+        this.items.add(producto);
     }
     public boolean estaVacia() {
         return items.isEmpty();
@@ -98,21 +116,15 @@ public class Factura {
     public void setItems(ArrayList<Producto> items) {
         this.items = items;
     }
-    public double getPrecioTotal() {
-        double total = 0.0;
-        for (Producto producto : this.items) {
-            total += producto.getPrecioUnitario();
-        }
-        return total;
-    }
 
-    /*public double calcularTotal() {
+
+    public double calcularTotal() {
         double total = 0;
         for (Producto item : items) {
             total += item.getSubtotal();
         }
         return total;
-    }*/
+    }
     public void guardarFactura(String nombreArchivo) {
         try {
             FileWriter writer = new FileWriter(nombreArchivo);
@@ -131,19 +143,25 @@ public class Factura {
 
 
     public String toString() {
-        String facturaStr = "";
-        facturaStr += "Factura #" + numeroFactura + "\n";
-        facturaStr += "Fecha: " + fechaFactura + "\n";
-        facturaStr += "Cliente: " + nombreCliente + "\n";
-        facturaStr += "---------------------------------------\n";
-        facturaStr += "Item                 Cantidad     Precio\n";
-        facturaStr += "---------------------------------------\n";
-        for (Producto item : items) {
-            facturaStr += item + "\n";
+        String factura = "Factura No. " + this.numeroFactura + "\n";
+        factura += "Fecha: " + this.fechaFactura.toString() + "\n";
+        factura += "Cliente: " + this.nombreCliente + "\n\n";
+
+        factura += "Productos:\n";
+        factura += "----------------------------------------\n";
+        factura += "Nombre\t\tPrecio\t\tCantidad\n";
+        factura += "----------------------------------------\n";
+
+        double total = 0.0;
+
+        for (Producto producto : this.items) {
+            factura += producto.getDescripcion() + "\t\t" + producto.getPrecioUnitario() + "\t\t" + producto.getCantidad() + "\n";
+            total += producto.getPrecioUnitario() * producto.getCantidad();
         }
-        facturaStr += "---------------------------------------\n";
-        facturaStr += "Total: $" + getPrecioTotal() + "\n";
-        return facturaStr;
+
+        factura += "\nTotal: " + total;
+
+        return factura;
     }
 }
 
