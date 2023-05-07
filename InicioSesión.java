@@ -142,8 +142,8 @@ public class InicioSesión extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        Registrar registrar = new Registrar();
+        // TODO add your handling code here:                                     ------Mandar al siguiente formulario-----
+        SeleccionarDato registrar = new SeleccionarDato();
         registrar.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
